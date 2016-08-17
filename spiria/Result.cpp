@@ -111,6 +111,14 @@ Result::Result (OpIs operation, vector<int> values, int target, int cumulated,
                                     return;
                                 }
                              }
+                             else
+                             {
+                                // Division is not allowed
+                                if (m_verbosity == ResultManager::verbosity_all)
+                                {
+                                    cout << "  branch from node " << m_uid <<" dropped" << endl;
+                                }  
+                             }
                              break ;
         }
 
