@@ -1,11 +1,50 @@
 #include <iostream>
+#include <vector>
+
+#include "ResultManager.h"
+#include "Result.h"
 
 using namespace std;
 
 int main()
 {
-   cout << "Hello World" << endl; 
-   
-   return 0;
-}
+    //-------- Change as needed for testing -------
+    
+    int target = 10 ;
+    int values[] = {7,3,5,4};
 
+    ResultManager::StopCondition stopCondition = ResultManager::stop_atEnd ;
+//  ResultManager::StopCondition stopCondition = ResultManager::stop_onTarget ;
+
+//  ResultManager::Verbosity verbosity = ResultManager::verbosity_none ;
+    ResultManager::Verbosity verbosity = ResultManager::verbosity_operation ;
+//  ResultManager::Verbosity verbosity = ResultManager::verbosity_all ;
+    
+    //-------------- Don't edit below -------------
+    
+    cout << endl << "Target = " << target << endl;
+    cout << "Values = " ;
+    
+    vector<int> source (values, values + sizeof(values) / sizeof(int) );
+    
+    for (vector<int>::const_iterator i = source.begin(); i != source.end(); ++i)
+            cout << *i << ' ' ;
+            
+    cout << endl << endl ;
+        
+    ResultManager myResultManager (target, verbosity, stopCondition) ;
+    Result thisResult (Result::opIsInit, source, target, 0, NULL, &myResultManager);
+   
+    if (!myResultManager.WasTargetFound())
+    {
+        int    bestResult;
+        string opString = myResultManager.GetClosestResult (bestResult);
+        
+        cout << "Target not found. Closest result was : " ;
+        cout << opString << " = " << bestResult ;
+    }
+        
+    cout << endl ;
+    
+    return 0;
+}
