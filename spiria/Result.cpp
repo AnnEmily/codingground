@@ -117,12 +117,12 @@ Result::Result (OpIs operation, vector<int> values, int cumulated,
     
     if (m_nextValues.empty())
     {
-        // Report final result to manager
+        // This is a leaf node : report final result to manager
         m_manager->SetResult (m_cumulated, m_opString);
     }
     else
     {
-        // Go deeper as long as needed
+        // This is a branch node : go deeper as long as needed
         m_plus = new Result (opIsPlus, m_nextValues, m_cumulated, this);
         
         if (GoDeeper())
