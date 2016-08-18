@@ -1,6 +1,8 @@
 
-#include "Result.h"
+#include <algorithm>
 #include <iostream>
+
+#include "Result.h"
 
 using namespace std;
 
@@ -42,9 +44,9 @@ Result::Result (OpIs operation, vector<int> values, int cumulated,
     m_uid           = m_manager->GetNewUid();
     m_stopCondition = m_manager->GetStopCondition();
         
-    m_operand = m_nextValues.back();
-    m_nextValues.pop_back();
-        
+    m_operand = m_nextValues.front();
+    m_nextValues.erase (m_nextValues.begin());
+
     if (m_previousNode != NULL)
     {
         m_opString = "(" + m_previousNode->GetOpString();
@@ -158,4 +160,3 @@ bool Result::GoDeeper ()
 { 
     return ! (m_stopCondition == ResultManager::stop_onTarget && m_manager->WasTargetFound () );
 };
- 
