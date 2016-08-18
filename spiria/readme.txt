@@ -6,7 +6,7 @@ This project will find all solutions by brute force to this question :
 
 Conditions : 
   - all numbers in the vector must be used
-  - divide is not allowed if its result is not integer
+  - division is not allowed if its result is not integer
   - if no solution found, give the closest result
   
 Program is command line. Arguments (source vector and target) should be changed in main.cpp
