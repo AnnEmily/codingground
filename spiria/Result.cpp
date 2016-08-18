@@ -4,7 +4,7 @@
 
 using namespace std;
 
-Result::Result (OpIs operation, vector<int> values, int target, int cumulated, 
+Result::Result (OpIs operation, vector<int> values, int cumulated, 
                 Result *previous, ResultManager *resultManager)
     :
         m_previous  (previous),
@@ -15,16 +15,27 @@ Result::Result (OpIs operation, vector<int> values, int target, int cumulated,
         m_divide    (NULL),
         m_operation (operation),
         m_available (values),
-        m_target    (target),
         m_cumulated (cumulated),
         m_verbosity (ResultManager::verbosity_none)
 {
     // Safety
         
-    if (m_available.empty() ||
-        m_manager == NULL      )
+    if (m_available.empty())
     {
         return ;
+    }
+    
+    if (m_manager == NULL)
+    {
+        if (m_previous == NULL)
+        {
+            cout << "Nothing will be printed at all !" << endl ;
+            return ;
+        }
+        else
+        {
+            m_manager = m_previous->GetResultManager () ;
+        }
     }
     
     // Initialize
@@ -62,14 +73,14 @@ Result::Result (OpIs operation, vector<int> values, int target, int cumulated,
         cout << "Created node " << m_uid ;
         
         if (m_previous)
-            cout << " from node " << m_previous->GetUid() << " :" << endl ;
+            cout << " from node " << m_previous->GetUid() << " :" ;
         else
-            cout << " from NULL   :" << endl ;
+            cout << " from NULL   :" ;
         
         cout << "  cumulated = " << m_cumulated
-             << ", operation "  << strOp
+             << ", op "  << strOp
              << ", operand = "  << m_operand 
-             << ", next operands = " ;
+             << ", next = " ;
         
         for (std::vector<int>::const_iterator i = m_available.begin(); i != m_available.end(); ++i)
             cout << *i << ' ' ;
@@ -99,27 +110,13 @@ Result::Result (OpIs operation, vector<int> values, int target, int cumulated,
                                 if (m_operand*quotient == m_cumulated)
                                 {
                                     m_cumulated = quotient ;
-                                }
-                                else
-                                {
-                                    // Division is not allowed
-                                    if (m_verbosity == ResultManager::verbosity_all)
-                                    {
-                                        cout << "  branch from node " << m_uid <<" dropped" << endl;
-                                    }
-                                        
-                                    return;
+                                    break ;
                                 }
                              }
-                             else
-                             {
-                                // Division is not allowed
-                                if (m_verbosity == ResultManager::verbosity_all)
-                                {
-                                    cout << "  branch from node " << m_uid <<" dropped" << endl;
-                                }  
-                             }
-                             break ;
+
+                             // Division is not allowed (result not integer or divide by zero)
+                             m_manager->PrintBranchDropped (m_uid) ;
+                             return;
         }
 
         m_opString += strOp;
@@ -135,47 +132,23 @@ Result::Result (OpIs operation, vector<int> values, int target, int cumulated,
     if (m_available.empty())
     {
         // Report final result to manager
-    
-        m_manager->SetResult (m_target, m_cumulated, m_opString);
-        
-        // Verbose as required
-        
-        if (m_verbosity == ResultManager::verbosity_none)
-        {
-            if (m_cumulated == m_target)
-            {
-                cout << m_opString << "=" << m_cumulated << " .............. target found" << endl;
-            }
-        }
-        else
-        {
-            cout << m_opString << "=" << m_cumulated ;
-        
-            if (m_cumulated == m_target)
-            {
-                cout << " .............. target found" << endl;
-                return;
-            }
-            else
-            {
-                cout << endl;
-            }
-        }
+        m_manager->SetResult (m_cumulated, m_opString);
+        return;
     }
     
     // Go deeper if needed
     
     if (GoDeeper())
-        m_plus   = new Result (opIsPlus,   m_available, m_target, m_cumulated, this, m_manager);
+        m_plus   = new Result (opIsPlus,   m_available, m_cumulated, this);
         
     if (GoDeeper())
-        m_minus  = new Result (opIsMinus,  m_available, m_target, m_cumulated, this, m_manager);
+        m_minus  = new Result (opIsMinus,  m_available, m_cumulated, this);
         
     if (GoDeeper())
-        m_times  = new Result (opIsTimes,  m_available, m_target, m_cumulated, this, m_manager);
+        m_times  = new Result (opIsTimes,  m_available, m_cumulated, this);
         
     if (GoDeeper())
-        m_divide = new Result (opIsDivide, m_available, m_target, m_cumulated, this, m_manager);
+        m_divide = new Result (opIsDivide, m_available, m_cumulated, this);
 };
     
 Result::~Result()
@@ -191,14 +164,13 @@ Result::~Result()
         
     if (m_divide)
         delete m_divide;
-        
-    if (m_verbosity == ResultManager::verbosity_all)
-    {
-        cout << "Deleting node " << m_uid << endl;
-    }
+
+    if (m_manager)
+        m_manager->PrintNodeDeleted (m_uid) ;
 };
 
 bool Result::GoDeeper ()
 { 
     return ! (m_stopCondition == ResultManager::stop_onTarget && m_manager->WasTargetFound () );
 };
+ 
