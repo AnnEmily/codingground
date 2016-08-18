@@ -1,3 +1,4 @@
+#include <algorithm>
 #include <iostream>
 #include <vector>
 
@@ -16,25 +17,44 @@ int main()
     ResultManager::StopCondition stopCondition = ResultManager::stop_atEnd ;
 //  ResultManager::StopCondition stopCondition = ResultManager::stop_onTarget ;
 
-//  ResultManager::Verbosity verbosity = ResultManager::verbosity_min ;
-    ResultManager::Verbosity verbosity = ResultManager::verbosity_normal ;
+    ResultManager::Verbosity verbosity = ResultManager::verbosity_min ;
+//  ResultManager::Verbosity verbosity = ResultManager::verbosity_normal ;
 //  ResultManager::Verbosity verbosity = ResultManager::verbosity_max ;
     
+    
     //-------------- Don't edit below -------------
+    
+    // Print source and target values
     
     cout << endl << "Target = " << target << endl;
     cout << "Values = " ;
     
     vector<int> source (values, values + sizeof(values) / sizeof(int) );
+    std::sort (source.begin(), source.end()) ;
     
     for (vector<int>::const_iterator i = source.begin(); i != source.end(); ++i)
             cout << *i << ' ' ;
             
     cout << endl << endl ;
         
+    // Try all permutations of the source vector
+    
     ResultManager resultManager (target, verbosity, stopCondition) ;
-    Result        result (Result::opIsInit, source, 0, NULL, &resultManager);
+    
+    do
+    {
+        Result result (Result::opIsInit, source, 0, NULL, &resultManager);
+        
+        if (stopCondition == ResultManager::stop_onTarget && 
+            resultManager.WasTargetFound ()                 )
+            break ;
+    } 
+    while ( std::next_permutation (source.begin(), source.end()) );
+    
+    // Print a summary of operations and eventual solutions found
    
+    cout << endl << resultManager.GetOperationCount() << " operations tested." << endl ;
+    
     if (!resultManager.WasTargetFound())
     {
         int    bestResult;
@@ -43,8 +63,12 @@ int main()
         cout << "Target not found. Closest result was : " ;
         cout << opString << " = " << bestResult ;
     }
+    else
+    {
+        cout << resultManager.GetSolutionCount() << " solutions found." ;
+    }
         
-    cout << endl ;
+    cout << endl << endl ;
     
     return 0;
 }
