@@ -22,12 +22,14 @@ public:
     
     ResultManager (int target, Verbosity verbosity, StopCondition stopCondition);
     
-    void          SetResult        (int target, int result, string opString);
-    bool          WasTargetFound   () ;
-    int           GetNewUid        () ;
-    Verbosity     GetVerbosity     () {return m_verbosity;} ;
-    StopCondition GetStopCondition () {return m_stopCondition;} ;
-    string        GetClosestResult (int & result) ;
+    void          SetResult          (int result, string opString);
+    bool          WasTargetFound     () ;
+    int           GetNewUid          () ;
+    Verbosity     GetVerbosity       () {return m_verbosity;} ;
+    StopCondition GetStopCondition   () {return m_stopCondition;} ;
+    string        GetClosestResult   (int & result) ;
+    void          PrintBranchDropped (int uid) ;
+    void          PrintNodeDeleted   (int uid) ;
     
 private:
     int           m_uid ;
