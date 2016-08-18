@@ -1,8 +1,11 @@
 #pragma once
 
 #include <string>
+#include <vector>
 
 using namespace std;
+
+class Result;
 
 class ResultManager
 {
@@ -28,6 +31,7 @@ public:
     Verbosity     GetVerbosity       () {return m_verbosity;} ;
     StopCondition GetStopCondition   () {return m_stopCondition;} ;
     string        GetClosestResult   (int & result) ;
+    void          PrintNodeCreated   (int uid, Result *previousNode, int cumulated, string operation, int operand, vector<int> nextValues) ;
     void          PrintBranchDropped (int uid) ;
     void          PrintNodeDeleted   (int uid) ;
     
