@@ -7,14 +7,14 @@
  
 ResultManager::ResultManager (int target, Verbosity verbosity, StopCondition stopCondition)
     :
-     m_uid            (0),
+     m_target         (target),
      m_verbosity      (verbosity),
      m_stopCondition  (stopCondition),
-     m_target         (target),
      m_bestDiff       (numeric_limits<int>::max()),
      m_bestResult     (0),
      m_solutionCount  (0),
-     m_operationCount (0)
+     m_operationCount (0),
+     m_uid            (0)
 {} ;
  
 int ResultManager::GetNewUid ()
