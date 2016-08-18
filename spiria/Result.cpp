@@ -15,8 +15,7 @@ Result::Result (OpIs operation, vector<int> values, int cumulated,
         m_divide    (NULL),
         m_operation (operation),
         m_available (values),
-        m_cumulated (cumulated),
-        m_verbosity (ResultManager::verbosity_none)
+        m_cumulated (cumulated)
 {
     // Safety
         
@@ -41,7 +40,6 @@ Result::Result (OpIs operation, vector<int> values, int cumulated,
     // Initialize
         
     m_uid           = m_manager->GetNewUid();
-    m_verbosity     = m_manager->GetVerbosity();
     m_stopCondition = m_manager->GetStopCondition();
         
     m_operand = m_available.back();
@@ -67,31 +65,9 @@ Result::Result (OpIs operation, vector<int> values, int cumulated,
         default:         strOp = "init";
                          break;
     }
-
-    if (m_verbosity == ResultManager::verbosity_all)
-    {
-        cout << "Creating node " << m_uid ;
         
-        if (m_previous)
-            cout << " from node " << m_previous->GetUid() << " :" ;
-        else
-            cout << " from NULL   :" ;
-        
-        cout << "  cumulated = " << m_cumulated
-             << ", op "          << strOp
-             << ", operand = "   << m_operand ;
-             
-        if (!m_available.empty())
-        {
-            cout << ", next = " ;
-        
-            for (std::vector<int>::const_iterator i = m_available.begin(); i != m_available.end(); ++i)
-                cout << *i << ' ' ;
-        }
-            
-        cout << endl;
-    }
-        
+    m_manager->PrintNodeCreated (m_uid, m_previous, m_cumulated, strOp, m_operand, m_available) ;
+    
     // Compute result
         
     if (m_operation != opIsInit)
