@@ -70,7 +70,7 @@ Result::Result (OpIs operation, vector<int> values, int cumulated,
 
     if (m_verbosity == ResultManager::verbosity_all)
     {
-        cout << "Created node " << m_uid ;
+        cout << "Creating node " << m_uid ;
         
         if (m_previous)
             cout << " from node " << m_previous->GetUid() << " :" ;
@@ -78,12 +78,16 @@ Result::Result (OpIs operation, vector<int> values, int cumulated,
             cout << " from NULL   :" ;
         
         cout << "  cumulated = " << m_cumulated
-             << ", op "  << strOp
-             << ", operand = "  << m_operand 
-             << ", next = " ;
+             << ", op "          << strOp
+             << ", operand = "   << m_operand ;
+             
+        if (!m_available.empty())
+        {
+            cout << ", next = " ;
         
-        for (std::vector<int>::const_iterator i = m_available.begin(); i != m_available.end(); ++i)
-            cout << *i << ' ' ;
+            for (std::vector<int>::const_iterator i = m_available.begin(); i != m_available.end(); ++i)
+                cout << *i << ' ' ;
+        }
             
         cout << endl;
     }
