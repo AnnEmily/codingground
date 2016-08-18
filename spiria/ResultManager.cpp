@@ -1,17 +1,20 @@
 #include "ResultManager.h"
 #include "Result.h"
  
+#include <iomanip>
 #include <iostream>
 #include <limits>
  
 ResultManager::ResultManager (int target, Verbosity verbosity, StopCondition stopCondition)
     :
-     m_uid           (0),
-     m_verbosity     (verbosity),
-     m_stopCondition (stopCondition),
-     m_target        (target),
-     m_bestDiff      (numeric_limits<int>::max()),
-     m_bestResult    (0)
+     m_uid            (0),
+     m_verbosity      (verbosity),
+     m_stopCondition  (stopCondition),
+     m_target         (target),
+     m_bestDiff       (numeric_limits<int>::max()),
+     m_bestResult     (0),
+     m_solutionCount  (0),
+     m_operationCount (0)
 {} ;
  
 int ResultManager::GetNewUid ()
@@ -30,19 +33,24 @@ void ResultManager::SetResult (int result, string opString)
         m_bestDiff   = currentDiff;
         m_opString   = opString;
     }
-     
+    
+    if (currentDiff == 0)
+        m_solutionCount++;
+        
+    m_operationCount++ ;
+    
     // Verbose as required
          
     if (m_verbosity == verbosity_min)
     {
         if (currentDiff == 0)
         {
-            cout << opString << "=" << result << " .............. target found" << endl;
+            cout << std::setw(3) << m_solutionCount << " : " << opString << "=" << result << " .............. target found" << endl;
         }
     }
     else
     {
-        cout << opString << "=" << result ;
+        cout << std::setw(5) << m_operationCount << " : "<<  opString << "=" << result ;
          
         if (currentDiff == 0)
         {
@@ -102,5 +110,4 @@ void ResultManager::PrintNodeDeleted (int uid)
     {
         cout << "Deleting node " << uid << endl;
     }
- }
- 
+}
