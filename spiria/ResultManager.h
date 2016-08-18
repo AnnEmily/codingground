@@ -23,7 +23,7 @@ public:
     ResultManager (int target, Verbosity verbosity, StopCondition stopCondition);
     
     void          SetResult          (int result, string opString);
-    bool          WasTargetFound     () ;
+    bool          WasTargetFound     () {return m_bestDiff == 0;} ;
     int           GetNewUid          () ;
     Verbosity     GetVerbosity       () {return m_verbosity;} ;
     StopCondition GetStopCondition   () {return m_stopCondition;} ;
