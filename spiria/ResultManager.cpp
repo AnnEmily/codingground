@@ -1,5 +1,6 @@
 
 #include "ResultManager.h"
+#include "Result.h"
 
 #include <iostream>
 #include <limits>
@@ -61,6 +62,33 @@ string ResultManager::GetClosestResult (int & result)
     return m_opString ;
 }
 
+void ResultManager::PrintNodeCreated (int uid, Result *previousNode, int cumulated, string operation, int operand, vector<int> nextValues)
+{
+    if (m_verbosity == verbosity_all)
+    {
+        cout << "Creating node " << uid ;
+        
+        if (previousNode)
+            cout << " from node " << previousNode->GetUid() << " :" ;
+        else
+            cout << " from NULL   :" ;
+        
+        cout << "  cumulated = " << cumulated
+             << ", op "          << operation
+             << ", operand = "   << operand ;
+             
+        if (!nextValues.empty())
+        {
+            cout << ", next = " ;
+        
+            for (std::vector<int>::const_iterator i = nextValues.begin(); i != nextValues.end(); ++i)
+                cout << *i << ' ' ;
+        }
+            
+        cout << endl;
+    } 
+}
+
 void ResultManager::PrintBranchDropped (int uid)
 {
     if (m_verbosity == verbosity_all)
@@ -76,3 +104,4 @@ void ResultManager::PrintNodeDeleted (int uid)
         cout << "Deleting node " << uid << endl;
     }
 }
+ 
