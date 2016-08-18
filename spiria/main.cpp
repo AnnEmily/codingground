@@ -32,13 +32,13 @@ int main()
             
     cout << endl << endl ;
         
-    ResultManager myResultManager (target, verbosity, stopCondition) ;
-    Result thisResult (Result::opIsInit, source, target, 0, NULL, &myResultManager);
+    ResultManager resultManager (target, verbosity, stopCondition) ;
+    Result        result (Result::opIsInit, source, 0, NULL, &resultManager);
    
-    if (!myResultManager.WasTargetFound())
+    if (!resultManager.WasTargetFound())
     {
         int    bestResult;
-        string opString = myResultManager.GetClosestResult (bestResult);
+        string opString = resultManager.GetClosestResult (bestResult);
         
         cout << "Target not found. Closest result was : " ;
         cout << opString << " = " << bestResult ;
