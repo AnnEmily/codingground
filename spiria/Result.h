@@ -45,4 +45,4 @@ private:
     Result       *m_minus;
     Result       *m_times;
     Result       *m_divide;
-} ; 
+} ;
