@@ -1,6 +1,7 @@
 
 #include "ResultManager.h"
 
+#include <iostream>
 #include <limits>
 
 ResultManager::ResultManager (int target, Verbosity verbosity, StopCondition stopCondition)
@@ -19,21 +20,38 @@ int ResultManager::GetNewUid ()
     return m_uid;
 } ;
 
-void ResultManager::SetResult (int target, int result, string opString)
+void ResultManager::SetResult (int result, string opString)
 {
-    if (target != m_target)
-    {
-        // Ignore this call. Target is not the same as the one declared on construction
-        return;
-    }
-    
-    int currentDiff = abs (result-target);
+    int currentDiff = abs (result-m_target);
     
     if (currentDiff < m_bestDiff)
     {
         m_bestResult = result ;
         m_bestDiff   = currentDiff;
         m_opString   = opString;
+    }
+    
+    // Verbose as required
+        
+    if (m_verbosity == ResultManager::verbosity_none)
+    {
+        if (currentDiff == 0)
+        {
+            cout << opString << "=" << result << " .............. target found" << endl;
+        }
+    }
+    else
+    {
+        cout << opString << "=" << result ;
+        
+        if (currentDiff == 0)
+        {
+            cout << " .............. target found" << endl;
+        }
+        else
+        {
+            cout << endl;
+        }
     }
 } ;
 
@@ -46,4 +64,20 @@ string ResultManager::GetClosestResult (int & result)
 {
     result = m_bestResult ;
     return m_opString ;
+}
+
+void ResultManager::PrintBranchDropped (int uid)
+{
+    if (m_verbosity == ResultManager::verbosity_all)
+    {
+        cout << "  branch from node " << uid <<" dropped" << endl;
+    }
+}
+
+void ResultManager::PrintNodeDeleted (int uid)
+{
+    if (m_verbosity == ResultManager::verbosity_all)
+    {
+        cout << "Deleting node " << m_uid << endl;
+    }
 }
