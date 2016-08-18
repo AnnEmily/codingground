@@ -1,4 +1,6 @@
+
 #include <algorithm>
+#include <iomanip>
 #include <iostream>
 #include <vector>
 
@@ -7,11 +9,16 @@
 
 using namespace std;
 
+int factorial (int n)
+{
+    return (n == 1 || n == 0) ? 1 : factorial(n - 1) * n;
+}
+
 int main()
 {
     //-------- Change as needed for testing -------
     
-    int target = 10 ;
+    int target = 39 ;
     int values[] = {7,3,5,4};
 
     ResultManager::StopCondition stopCondition = ResultManager::stop_atEnd ;
@@ -52,8 +59,9 @@ int main()
     while ( std::next_permutation (source.begin(), source.end()) );
     
     // Print a summary of operations and eventual solutions found
-   
-    cout << endl << resultManager.GetOperationCount() << " operations tested." << endl ;
+    
+    cout << endl << setw(5) << 64*factorial(source.size())       << " operations theorically possible." ;
+    cout << endl << setw(5) << resultManager.GetOperationCount() << " operations allowed and tested." << endl ;
     
     if (!resultManager.WasTargetFound())
     {
@@ -65,7 +73,7 @@ int main()
     }
     else
     {
-        cout << resultManager.GetSolutionCount() << " solutions found." ;
+        cout << setw(5) << resultManager.GetSolutionCount() << " solutions found." ;
     }
         
     cout << endl << endl ;
