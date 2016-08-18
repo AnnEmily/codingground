@@ -4,6 +4,8 @@
 #include <iostream>
 #include <vector>
 
+#include <math.h>
+
 #include "ResultManager.h"
 #include "Result.h"
 
@@ -60,8 +62,11 @@ int main()
     
     // Print a summary of operations and eventual solutions found
     
-    cout << endl << setw(5) << 64*factorial(source.size())       << " operations theorically possible." ;
-    cout << endl << setw(5) << resultManager.GetOperationCount() << " operations allowed and tested." << endl ;
+    int    srcLen = source.size() ;
+    long possible = factorial(srcLen) * pow(4, srcLen-1) ;
+    
+    cout << endl << setw(6) << possible << " operations theorically possible." ;
+    cout << endl << setw(6) << resultManager.GetOperationCount() << " operations allowed and tested." << endl ;
     
     if (!resultManager.WasTargetFound())
     {
@@ -73,7 +78,7 @@ int main()
     }
     else
     {
-        cout << setw(5) << resultManager.GetSolutionCount() << " solutions found." ;
+        cout << setw(6) << resultManager.GetSolutionCount() << " solutions found." ;
     }
         
     cout << endl << endl ;
