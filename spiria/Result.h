@@ -18,13 +18,14 @@ public:
         opIsDivide
     };
     
-    Result (OpIs operation, vector<int> values, int target, int cumulated, 
-            Result *previous, ResultManager *resultManager);
+    Result (OpIs operation, vector<int> values, int cumulated, 
+            Result *previous, ResultManager *resultManager = NULL);
     ~Result();
     
-    bool   GoDeeper    () ;
-    string GetOpString () {return m_opString;} ;
-    int    GetUid      () {return m_uid;     } ;
+    bool           GoDeeper         () ;
+    string         GetOpString      () {return m_opString;} ;
+    int            GetUid           () {return m_uid;     } ;
+    ResultManager* GetResultManager () {return m_manager; } ;
     
 private:
     Result        *m_previous;
@@ -35,7 +36,6 @@ private:
     int                          m_uid;
     
     vector<int>   m_available;
-    int           m_target;
     int           m_cumulated;
     int           m_operand;
     
@@ -46,4 +46,4 @@ private:
     Result       *m_minus;
     Result       *m_times;
     Result       *m_divide;
-} ;
+} ; 
