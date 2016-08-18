@@ -33,7 +33,7 @@ void ResultManager::SetResult (int result, string opString)
     
     // Verbose as required
         
-    if (m_verbosity == ResultManager::verbosity_none)
+    if (m_verbosity == verbosity_none)
     {
         if (currentDiff == 0)
         {
@@ -55,11 +55,6 @@ void ResultManager::SetResult (int result, string opString)
     }
 } ;
 
-bool ResultManager::WasTargetFound ()
-{
-    return m_bestDiff == 0;
-};
-
 string ResultManager::GetClosestResult (int & result)
 {
     result = m_bestResult ;
@@ -68,7 +63,7 @@ string ResultManager::GetClosestResult (int & result)
 
 void ResultManager::PrintBranchDropped (int uid)
 {
-    if (m_verbosity == ResultManager::verbosity_all)
+    if (m_verbosity == verbosity_all)
     {
         cout << "  branch from node " << uid <<" dropped" << endl;
     }
@@ -76,7 +71,7 @@ void ResultManager::PrintBranchDropped (int uid)
 
 void ResultManager::PrintNodeDeleted (int uid)
 {
-    if (m_verbosity == ResultManager::verbosity_all)
+    if (m_verbosity == verbosity_all)
     {
         cout << "Deleting node " << m_uid << endl;
     }
