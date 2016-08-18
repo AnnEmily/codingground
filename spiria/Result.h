@@ -31,7 +31,6 @@ private:
     Result        *m_previous;
     ResultManager *m_manager;
     
-    ResultManager::Verbosity     m_verbosity;
     ResultManager::StopCondition m_stopCondition;
     int                          m_uid;
     
