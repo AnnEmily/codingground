@@ -73,6 +73,6 @@ void ResultManager::PrintNodeDeleted (int uid)
 {
     if (m_verbosity == verbosity_all)
     {
-        cout << "Deleting node " << m_uid << endl;
+        cout << "Deleting node " << uid << endl;
     }
 }
