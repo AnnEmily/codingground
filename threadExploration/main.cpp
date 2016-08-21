@@ -7,7 +7,7 @@
 
 std::mutex mtx;           // mutex for critical section
 
-void print_block (bool lock, int repetitions, int threadId, int *value) 
+void printValue (bool lock, int repetitions, int threadId, int *value) 
 {
   // critical section (exclusive access to std::cout signaled by locking mtx):
   
@@ -27,13 +27,13 @@ void print_block (bool lock, int repetitions, int threadId, int *value)
 
 int main ()
 {
-  bool lock = true ;       // change for testing
+  bool lock = false ;       // change for testing
   
   int repetitions = 200 ;
   int value = 0;
   
-  std::thread th1 (print_block, lock, repetitions, 1, &value);
-  std::thread th2 (print_block, lock, repetitions, 2, &value);
+  std::thread th1 (printValue, lock, repetitions, 1, &value);
+  std::thread th2 (printValue, lock, repetitions, 2, &value);
 
   th1.join();
   th2.join();
