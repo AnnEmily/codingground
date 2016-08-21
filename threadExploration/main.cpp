@@ -1,3 +1,6 @@
+// This program should be compiled on http://cpp.sh
+// http://www.tutorialspoint.com/compile_cpp_online.php does not support threads
+
 #include <iostream>       // endl not supported in cpp.sh
 #include <thread>         // std::thread not supported on tutorialspoint
 #include <mutex>
