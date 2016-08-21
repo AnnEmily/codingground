@@ -5,6 +5,8 @@
 #include <thread>         // std::thread not supported on tutorialspoint
 #include <mutex>
 
+#define THREAD_COUNT 5    // require that much threads
+
 std::mutex mtx;           // mutex for critical section
 
 void printValue (bool lock, int repetitions, int threadId, int *value) 
@@ -27,16 +29,18 @@ void printValue (bool lock, int repetitions, int threadId, int *value)
 
 int main ()
 {
-  bool lock = false ;       // change for testing
+  bool lock = true ;       // change for testing
   
-  int repetitions = 200 ;
+  int repetitions = 10 ;
   int value = 0;
   
-  std::thread th1 (printValue, lock, repetitions, 1, &value);
-  std::thread th2 (printValue, lock, repetitions, 2, &value);
-
-  th1.join();
-  th2.join();
+  std::thread threads [THREAD_COUNT];
+  
+  for (int threadId = 0; threadId < THREAD_COUNT; ++threadId)
+     threads[threadId] = std::thread (printValue, lock, repetitions, threadId, &value);
+    
+  for (auto & th : threads) 
+     th.join();
 
   return 0;
 }
