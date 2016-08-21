@@ -29,16 +29,22 @@ void printValue (bool lock, int repetitions, int threadId, int *value)
 
 int main ()
 {
-  bool lock = true ;       // change for testing
+  // Initialize
+  
+  bool lock = false ;       // change for testing
   
   int repetitions = 10 ;
   int value = 0;
   
   std::thread threads [THREAD_COUNT];
   
+  // Launch threads
+  
   for (int threadId = 0; threadId < THREAD_COUNT; ++threadId)
      threads[threadId] = std::thread (printValue, lock, repetitions, threadId, &value);
     
+  // Synchronize
+  
   for (auto & th : threads) 
      th.join();
 
