@@ -60,7 +60,11 @@ int main (int argc, char **argv)
     
     if (den != 0)
     {
-        cout << " Remainder is " << 3 % 5 << endl;
+        cout << " Remainder is " << num % den << endl;
+    }
+    else
+    {
+        cout << " Remainder is infinite" << endl;
     }
    
    return 0;
