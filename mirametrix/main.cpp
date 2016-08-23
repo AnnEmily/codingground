@@ -4,11 +4,13 @@
 
 using namespace std;
 
-bool AsciiToNum (char *src, int &num)
+bool AsciiToNum (const char *src, int &num)
 {
+    //cout << "src = " << src << " " ;
+    
     num = 0 ;
     vector<int> digits ;
-    char *ptr = src ;
+    const char *ptr = src ;
     
     while (*ptr != 0)
     {
@@ -30,6 +32,8 @@ bool AsciiToNum (char *src, int &num)
         num  += digit * mult ;
         mult *= 10 ;
     }
+    
+    //cout << "src = " << src << endl ;
     
     return true ;
 }
